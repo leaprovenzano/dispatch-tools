@@ -4,7 +4,7 @@ from dispatchtools._abcs import Dispatcher
 
 class directdispatch(Dispatcher):  # noqa: N801
 
-    """The simplest kind of dispatch based values.
+    """The simplest kind of dispatch based on exact values.
 
     Example:
 
