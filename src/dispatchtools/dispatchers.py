@@ -1,16 +1,16 @@
 from typing import Hashable, Callable, Optional
-from dispatchtools.base import Dispatcher
+from dispatchtools._abcs import Dispatcher
 
 
-class valuedispatch(Dispatcher):  # noqa: N801
+class directdispatch(Dispatcher):  # noqa: N801
 
     """The simplest kind of dispatch based values.
 
     Example:
 
-        >>> from dispatchtools import valuedispatch
+        >>> from dispatchtools import directdispatch
         >>>
-        >>> @valuedispatch
+        >>> @directdispatch
         ... def myfunc(n):
         ...     return 'something else'
         ...
