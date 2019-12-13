@@ -17,6 +17,7 @@ pytest-runner
 coverage
 hypothesis
 pytest-cov
+pytest-dependency
 
 # linting
 flake8>=3.5.0
