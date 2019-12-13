@@ -33,16 +33,8 @@ class directdispatch(Dispatcher):  # noqa: N801
     def register(self, value: Hashable, f: Optional[Callable] = None) -> Callable:
         if f is None:
             return lambda f: self.register(value, f)
-        self._registry[value] = f
+        self.registry.register(value, f)
         return f
 
-    def __dispatch__(self, value: Hashable) -> Callable:
-        try:
-            return self._registry[value]
-        except KeyError:
-            return self._default
-
-    def __call__(self, *args, **kwargs):
-        if not args:
-            raise TypeError(f'{self._name} requires at least 1 positional argument')
-        return self.__dispatch__(args[0])(*args, **kwargs)
+    def __dispatch__(self, *args, **kwargs) -> Callable:
+        return self.registry[args[0]]
