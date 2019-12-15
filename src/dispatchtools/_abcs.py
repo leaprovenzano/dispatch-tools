@@ -1,11 +1,11 @@
-from typing import Hashable, Callable, Optional
+from typing import Hashable, Callable, Optional, NoReturn
 
 import functools
 
 from abc import ABC, abstractmethod
 
-
-from dispatchtools.registry import Registry
+from dispatchtools.utils import accepts_args
+from dispatchtools.exceptions import InvalidCallableError
 
 
 class Dispatcher(ABC):
@@ -18,9 +18,20 @@ class Dispatcher(ABC):
         - __dispatch__
     """
 
-    def __init__(self, f: Callable):
-        self._name = f.__name__
-        self.registry = Registry(f)
+    def validate_callable(self, f: Callable) -> NoReturn:
+        """Raise an error if callable cannot be used in dispatch otherwise do nothing.
+
+        The dispatcher base class simply checks that function passed in can
+        accept arguements since this is the most basic requirement for a
+        callable to be used in dispatch. Children of `Dispatcher` should override
+        this method and call super().validate_callable() in that method to add functionality
+        and maintain a stable interface.
+
+        Raises:
+            InvalidCallableError
+        """
+        if not accepts_args(f):
+            raise InvalidCallableError(f, 'dispatch functions must accept args.')
 
     @abstractmethod
     def register(self, value: Hashable, f: Optional[Callable]) -> Callable:
