@@ -24,7 +24,7 @@ class Dispatcher(ABC):
 
     @abstractmethod
     def register(self, value: Hashable, f: Optional[Callable]) -> Callable:
-        """register a funciton with the dispatcher.
+        """register a function with the dispatcher.
 
         Args:
             value (Hashable): a hashable value
