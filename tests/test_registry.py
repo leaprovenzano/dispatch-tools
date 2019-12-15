@@ -14,28 +14,19 @@ from tests import strategies as st
 from tests.utils import dependency
 
 
-def default(*args, **kwargs):
-    return 'default'
-
-
 class TestRegistry:
 
     registry = None
 
-    @given(st.everything_except(Callable))
-    def test_invalid_init_registry(self, inp):
-        with pytest.raises(TypeError):
-            Registry(inp)
-
     @dependency
     def test_init_registry(self):
-        self.__class__.registry = Registry(default)
+        self.__class__.registry = Registry()
         pass
 
     @dependency(depends=['init_registry'])
-    def test_default(self):
-        f = self.registry['missing']
-        assert f == default
+    def test_missing(self):
+        with pytest.raises(KeyError):
+            self.registry['missing']
 
     @given(key=infer, value=st.everything_except(Callable))
     @dependency(depends=['init_registry'])

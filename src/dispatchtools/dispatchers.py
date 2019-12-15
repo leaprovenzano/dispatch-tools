@@ -1,6 +1,8 @@
 from typing import Hashable, Callable, Optional
 from dispatchtools._abcs import Dispatcher
 
+from dispatchtools.registry import Registry
+
 
 class directdispatch(Dispatcher):  # noqa: N801
 
@@ -30,6 +32,11 @@ class directdispatch(Dispatcher):  # noqa: N801
         'three'
     """
 
+    def __init__(self, f: Callable):
+        self.__default__ = f
+        self._name = f.__name__
+        self.registry = Registry()
+
     def register(self, value: Hashable, f: Optional[Callable] = None) -> Callable:
         if f is None:
             return lambda f: self.register(value, f)
@@ -37,4 +44,4 @@ class directdispatch(Dispatcher):  # noqa: N801
         return f
 
     def __dispatch__(self, *args, **kwargs) -> Callable:
-        return self.registry[args[0]]
+        return self.registry.get(args[0], self.__default__)
