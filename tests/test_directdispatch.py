@@ -1,26 +1,28 @@
 import pytest
 
 from dispatchtools.dispatchers import directdispatch
+from dispatchtools.exceptions import InvalidCallableError
 
 
-def test_noargs_fails_on_register():
+def test_invalid_default_raises_error():
 
-    with pytest.raises(ValueError, match=r'.* must contain at least one argument'):
+    with pytest.raises(InvalidCallableError):
 
         @directdispatch
         def func():
-            pass
+            return 'default'
 
 
-def test_noargs_except_self_fails_on_register():
+def test_invalid_register_raises_error():
+    @directdispatch
+    def func(*args, **kwargs):
+        return 'default'
 
-    with pytest.raises(ValueError, match=r'.* must contain at least one argument'):
+    with pytest.raises(InvalidCallableError):
 
-        class MyCls:
-
-            @directdispatch
-            def func(self):
-                pass
+        @func.register(1)
+        def _():
+            return 'crap'
 
 
 def test_basic_dispatcher():
