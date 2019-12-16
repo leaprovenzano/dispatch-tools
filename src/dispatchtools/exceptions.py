@@ -10,5 +10,5 @@ class InvalidCallableError(TypeError):
         r = f' {reason}' if reason else ''
         self.msg = self._base_msg.format(f, r)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.msg
