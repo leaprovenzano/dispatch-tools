@@ -1,4 +1,5 @@
 import typing
+from abc import ABCMeta
 from typing import Callable, Any
 import inspect
 
@@ -45,3 +46,28 @@ def is_generic(t: type) -> bool:
         True
     """
     return isinstance(t, typing._GenericAlias)  # type: ignore
+
+
+def is_abstract(t: type) -> bool:
+    """return true if `t` is an abc : ie it has un-overridden abstract methods
+
+    Example:
+        >>> from collections.abc import Hashable, Sized, Collection
+        >>> from dispatchtools.utils import is_abstract
+        >>>
+        >>> class Triplet(Sized):
+        ...
+        ...     def __len__(self):
+        ...         return 3
+        >>>
+        >>> is_abstract(int)
+        False
+        >>> is_abstract(Sized)
+        True
+        >>> is_abstract(Triplet)
+        False
+    """
+    try:
+        return isinstance(t, ABCMeta) and len(t.__abstractmethods__) > 0  # type: ignore
+    except AttributeError:
+        return False
