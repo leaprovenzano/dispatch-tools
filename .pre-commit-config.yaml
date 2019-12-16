@@ -13,3 +13,7 @@ repos:
     - id: check-json
     - id: pretty-format-json
     - id: check-ast
+-   repo: https://github.com/pre-commit/mirrors-mypy
+    rev: 'master'  # Use the sha / tag you want to point at
+    hooks:
+    -   id: mypy
