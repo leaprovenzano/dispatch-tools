@@ -17,3 +17,4 @@ repos:
     rev: 'master'  # Use the sha / tag you want to point at
     hooks:
     -   id: mypy
+        args: [--follow-imports=silent]
