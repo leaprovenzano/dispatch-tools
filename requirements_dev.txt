@@ -27,3 +27,5 @@ pep8-naming
 
 # pre-commit 
 pre-commit
+
+mypy
