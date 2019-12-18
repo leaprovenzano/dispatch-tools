@@ -18,3 +18,5 @@ repos:
     hooks:
     -   id: mypy
         args: [--follow-imports=silent]
+        exclude: "tests/test*.py"
+
