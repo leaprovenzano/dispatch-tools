@@ -1,4 +1,4 @@
-from typing import Hashable, Callable, Optional
+from typing import Hashable, Callable
 
 from dispatchtools._abcs import Dispatcher
 from dispatchtools.registry import Registry
@@ -38,12 +38,13 @@ class directdispatch(Dispatcher):  # noqa: N801
         self._name = f.__name__
         self.registry = Registry()
 
-    def register(self, value: Hashable, f: Optional[Callable] = None) -> Callable:
-        if f is None:
-            return lambda f: self.register(value, f)
-        self.validate_callable(f)
-        self.registry.register(value, f)
-        return f
+    def __register__(self, on: Hashable) -> Callable:  # type: ignore
+        def _register_inner(f: Callable):
+            self.validate_callable(f)
+            self.registry.register(on, f)
+            return f
+
+        return _register_inner
 
     def __dispatch__(self, *args, **kwargs) -> Callable:
         return self.registry.get(args[0], self.__default__)
