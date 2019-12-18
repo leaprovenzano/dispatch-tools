@@ -1,5 +1,5 @@
-from typing import Hashable, Callable, Optional, NoReturn
-
+from typing import Hashable, Callable, Optional
+from types import DynamicClassAttribute
 import functools
 
 from abc import ABC, abstractmethod
@@ -18,7 +18,7 @@ class Dispatcher(ABC):
         - __dispatch__
     """
 
-    def validate_callable(self, f: Callable) -> NoReturn:
+    def validate_callable(self, f: Callable):
         """Raise an error if callable cannot be used in dispatch otherwise do nothing.
 
         The dispatcher base class simply checks that function passed in can
@@ -33,8 +33,12 @@ class Dispatcher(ABC):
         if not accepts_args(f):
             raise InvalidCallableError(f, 'dispatch functions must accept args.')
 
+    @DynamicClassAttribute
+    def register(self) -> Callable:
+        return self.__register__
+
     @abstractmethod
-    def register(self, value: Hashable, f: Optional[Callable]) -> Callable:
+    def __register__(self, value: Hashable, f: Optional[Callable]) -> Callable:
         """register a function with the dispatcher.
 
         Args:
