@@ -1,7 +1,8 @@
-from typing import Hashable, Callable, Optional
-from types import DynamicClassAttribute
+from typing import Hashable, Callable, Union
+
 import functools
 
+from types import DynamicClassAttribute
 from abc import ABC, abstractmethod
 
 from dispatchtools.utils import accepts_args
@@ -38,12 +39,8 @@ class Dispatcher(ABC):
         return self.__register__
 
     @abstractmethod
-    def __register__(self, value: Hashable, f: Optional[Callable]) -> Callable:
+    def __register__(self, on: Union[Hashable, Callable], *args, **kwargs) -> Callable:
         """register a function with the dispatcher.
-
-        Args:
-            value (Hashable): a hashable value
-            f (Optional[Callable], optional): a callable
         """
         return NotImplemented
 

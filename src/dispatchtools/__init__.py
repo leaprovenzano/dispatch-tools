@@ -6,4 +6,4 @@ __author__ = """Lea Provenzano"""
 __email__ = 'leaprovenzano@gmail.com'
 __version__ = '0.1.0'
 
-from .dispatchers import directdispatch
+from .direct import directdispatch

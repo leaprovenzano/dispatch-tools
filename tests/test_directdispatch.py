@@ -1,6 +1,6 @@
 import pytest
 
-from dispatchtools.dispatchers import directdispatch
+from dispatchtools import directdispatch
 from dispatchtools.exceptions import InvalidCallableError
 
 
